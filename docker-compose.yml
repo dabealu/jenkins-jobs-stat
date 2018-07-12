@@ -1,0 +1,42 @@
+version: '2'
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
+    container_name: elasticsearch
+    restart: always
+    stop_grace_period: 1m00s
+    environment:
+      - "cluster.name=es-cluster-01"
+      - "node.name=es-01"
+      - "bootstrap.memory_lock=true"
+      - "network.host=127.0.0.1"
+      - "xpack.security.enabled=false"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./esdata/:/usr/share/elasticsearch/data/
+      - /etc/localtime:/etc/localtime
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    network_mode: host
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.2.2
+    container_name: elk-kibana
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+    environment:
+      - "ELASTICSEARCH_URL=http://127.0.0.1:9200"
+      - "ELASTICSEARCH_REQUESTTIMEOUT=90000"
+      - "XPACK_SECURITY_ENABLED=false"
+      - "SERVER_HOST=127.0.0.1"
+      - "SERVER_PORT=5601"
+    network_mode: host
