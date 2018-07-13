@@ -33,6 +33,10 @@ func (b *datBuild) getID() string {
 // extract job name from url
 func getJobName(url string) string {
 	s := strings.Split(url, "/")
+
+	if len(s) < 3 {
+		return url
+	}
 	return s[len(s)-3]
 }
 
