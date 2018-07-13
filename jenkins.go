@@ -24,7 +24,7 @@ type Job struct {
 // get list of jenkins jobs
 func listJobs(c *config) []string {
 	url := fmt.Sprintf(jobsURL, c.Jenkins.Url)
-	code, b := getUrl(url, c.Jenkins.User, c.Jenkins.Password)
+	code, b := jenkinsGet(url, c.Jenkins.User, c.Jenkins.Password, c.Jenkins.Verify)
 
 	if code != 200 {
 		log.Fatalf("List jobs: response code: %d", code)
@@ -89,7 +89,7 @@ func getBuild(c *config, job string, number int) (int, Build) {
 	url := fmt.Sprintf(jobBuildURL, c.Jenkins.Url, job, number)
 	build := Build{}
 
-	code, b := getUrl(url, c.Jenkins.User, c.Jenkins.Password)
+	code, b := jenkinsGet(url, c.Jenkins.User, c.Jenkins.Password, c.Jenkins.Verify)
 	if code != 200 {
 		return code, build
 	}
@@ -115,7 +115,7 @@ func listBuildNumbers(c *config, job string) []int {
 	result := []int{}
 
 	url := fmt.Sprintf(jobURL, c.Jenkins.Url, job)
-	code, b := getUrl(url, c.Jenkins.User, c.Jenkins.Password)
+	code, b := jenkinsGet(url, c.Jenkins.User, c.Jenkins.Password, c.Jenkins.Verify)
 
 	if code != 200 {
 		log.Printf("List builds: response code: %d", code)

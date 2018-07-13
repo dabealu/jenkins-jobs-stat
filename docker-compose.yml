@@ -3,7 +3,6 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
-    container_name: elasticsearch
     restart: always
     stop_grace_period: 1m00s
     environment:
@@ -29,7 +28,6 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:5.2.2
-    container_name: elk-kibana
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime
@@ -39,4 +37,12 @@ services:
       - "XPACK_SECURITY_ENABLED=false"
       - "SERVER_HOST=127.0.0.1"
       - "SERVER_PORT=5601"
+    network_mode: host
+
+  nginx:
+    image: nginx:1.13.6
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./nginx/:/etc/nginx/conf.d/
     network_mode: host

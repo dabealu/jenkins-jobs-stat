@@ -15,14 +15,16 @@ type Common struct {
 
 // jenkins access credentials and other parameters
 type Jenkins struct {
+	Url      string `yaml:"url"`
+	Verify   bool   `yaml:"verify"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
-	Url      string `yaml:"url"`
 }
 
 // access credentials to postgres database
 type Datastore struct {
 	Url      string `yaml:"url"`
+	Verify   bool   `yaml:"verify"`
 	Index    string `yaml:"index"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
@@ -42,12 +44,14 @@ func printConfExample() {
 			Interval: 600,
 		},
 		Jenkins{
+			Url:      "https://localhost:8080",
+			Verify:   true,
 			User:     "user",
 			Password: "password",
-			Url:      "http://localhost:8080",
 		},
 		Datastore{
-			Url:      "http://localhost:9200",
+			Url:      "https://localhost:9200",
+			Verify:   true,
 			Index:    "jenkins",
 			User:     "user",
 			Password: "password",

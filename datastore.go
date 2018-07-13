@@ -105,7 +105,7 @@ func saveBuilds(c *config, ch chan Build) {
 
 		// skip build if it doesn't finished yet or
 		// if it already exist in datastore
-		if b.Building || isBuildExist(docURL, db.User, db.Password) {
+		if b.Building || isBuildExist(docURL, db.User, db.Password, db.Verify) {
 			continue
 		}
 
@@ -114,6 +114,6 @@ func saveBuilds(c *config, ch chan Build) {
 			log.Printf("Save builds: json: %v", err)
 		}
 
-		createDoc(docURL+"/_create", db.User, db.Password, string(docBytes))
+		createDoc(docURL+"/_create", db.User, db.Password, string(docBytes), db.Verify)
 	}
 }
