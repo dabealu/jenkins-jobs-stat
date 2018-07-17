@@ -20,6 +20,8 @@ func init() {
 
 	datClient = createHttpClient(conf.Datastore.Verify)
 	jClient = createHttpClient(conf.Jenkins.Verify)
+
+	setDocsTimezone()
 }
 
 func main() {

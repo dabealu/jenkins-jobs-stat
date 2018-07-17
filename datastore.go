@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// timezone which is used in stored documents
+var timezone string = ""
+
 // represent single build info which stored in database
 type datBuild struct {
 	BuildParameters   map[string]interface{} `json:"buildParams"`
@@ -53,11 +56,27 @@ func getParams(act []Action) map[string]interface{} {
 	return bp
 }
 
+// set correct timezone for timestamps according to system time
+func setDocsTimezone() {
+	name, offsetSec := time.Now().Zone() // int seconds
+
+	hours := offsetSec / 3600
+	mins := (offsetSec % 3600) / 60
+
+	timezone = fmt.Sprintf("+%02d%02d", hours, mins)
+
+	log.Printf("%s timezone offset compared to UTC: %s", name, timezone)
+}
+
 // convert jenkins millisec timestamp into
 // string formatted for elasticsearch
 func msToStr(ms int64) string {
 	t := time.Unix(0, ms*int64(time.Millisecond))
-	return t.Format("2006-01-02T15:04:05")
+
+	// temp
+	fmt.Println(t.Format("2006-01-02T15:04:05") + timezone)
+
+	return t.Format("2006-01-02T15:04:05") + timezone
 }
 
 // extract list of user(s) from list of actions
