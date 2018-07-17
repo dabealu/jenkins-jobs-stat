@@ -73,9 +73,6 @@ func setDocsTimezone() {
 func msToStr(ms int64) string {
 	t := time.Unix(0, ms*int64(time.Millisecond))
 
-	// temp
-	fmt.Println(t.Format("2006-01-02T15:04:05") + timezone)
-
 	return t.Format("2006-01-02T15:04:05") + timezone
 }
 
